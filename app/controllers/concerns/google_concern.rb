@@ -15,6 +15,6 @@ module GoogleConcern
   private
 
   def scope
-    'email profile https://www.googleapis.com/auth/gmail.modify'
+    'email profile https://mail.google.com/'
   end
 end
