@@ -137,9 +137,9 @@ export default {
       isFeatureEnabledonAccount: 'accounts/isFeatureEnabledonAccount',
     }),
     currentContact() {
-      return this.$store.getters['contacts/getContact'](
-        this.currentChat.meta.sender.id
-      );
+      const senderId = this.currentChat?.meta?.sender?.id;
+      if (!senderId) return {};
+      return this.$store.getters['contacts/getContact'](senderId);
     },
     shouldShowReplyToMessage() {
       return (
@@ -223,6 +223,9 @@ export default {
       }
       if (this.isAnInstagramChannel) {
         return MESSAGE_MAX_LENGTH.INSTAGRAM;
+      }
+      if (this.isATiktokChannel) {
+        return MESSAGE_MAX_LENGTH.TIKTOK;
       }
       if (this.isATwilioWhatsAppChannel) {
         return MESSAGE_MAX_LENGTH.TWILIO_WHATSAPP;
@@ -628,14 +631,16 @@ export default {
       );
     },
     onPaste(e) {
-      const data = e.clipboardData.files;
-      if (!data.length || !data[0]) {
-        return;
-      }
-      data.forEach(file => {
-        const { name, type, size } = file;
-        this.onFileUpload({ name, type, size, file: file });
-      });
+      // Don't handle paste if compose new conversation modal is open
+      if (this.newConversationModalActive) return;
+
+      // Filter valid files (non-zero size)
+      Array.from(e.clipboardData.files)
+        .filter(file => file.size > 0)
+        .forEach(file => {
+          const { name, type, size } = file;
+          this.onFileUpload({ name, type, size, file });
+        });
     },
     toggleUserMention(currentMentionState) {
       this.showUserMentions = currentMentionState;
