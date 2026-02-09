@@ -12,7 +12,7 @@ RSpec.describe AdministratorNotifications::IntegrationsNotificationMailer do
     let(:mail) { described_class.with(account: account).slack_disconnect.deliver_now }
 
     it 'renders the subject' do
-      expect(mail.subject).to eq('Your Slack integration has expired')
+      expect(mail.subject).to eq('La tua integrazione Slack è scaduta')
     end
 
     it 'renders the receiver email' do
@@ -28,7 +28,7 @@ RSpec.describe AdministratorNotifications::IntegrationsNotificationMailer do
     let(:mail) { described_class.with(account: account).dialogflow_disconnect.deliver_now }
 
     it 'renders the subject' do
-      expect(mail.subject).to eq('Your Dialogflow integration was disconnected')
+      expect(mail.subject).to eq('La tua integrazione Dialogflow è stata disconnessa')
     end
 
     it 'renders the content' do

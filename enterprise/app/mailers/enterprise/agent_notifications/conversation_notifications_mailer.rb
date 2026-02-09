@@ -5,7 +5,7 @@ module Enterprise::AgentNotifications::ConversationNotificationsMailer
     @agent = agent
     @conversation = conversation
     @sla_policy = sla_policy
-    subject = "Conversation [ID - #{@conversation.display_id}] missed SLA for first response"
+    subject = "Conversazione [ID - #{@conversation.display_id}] ha superato lo SLA per la prima risposta"
     @action_url = app_account_conversation_url(account_id: @conversation.account_id, id: @conversation.display_id)
     send_mail_with_liquid(to: @agent.email, subject: subject) and return
   end
@@ -17,7 +17,7 @@ module Enterprise::AgentNotifications::ConversationNotificationsMailer
     @conversation = conversation
     @sla_policy = sla_policy
     @action_url = app_account_conversation_url(account_id: @conversation.account_id, id: @conversation.display_id)
-    send_mail_with_liquid(to: @agent.email, subject: "Conversation [ID - #{@conversation.display_id}] missed SLA for next response") and return
+    send_mail_with_liquid(to: @agent.email, subject: "Conversazione [ID - #{@conversation.display_id}] ha superato lo SLA per la risposta successiva") and return
   end
 
   def sla_missed_resolution(conversation, agent, sla_policy)
@@ -27,7 +27,7 @@ module Enterprise::AgentNotifications::ConversationNotificationsMailer
     @conversation = conversation
     @sla_policy = sla_policy
     @action_url = app_account_conversation_url(account_id: @conversation.account_id, id: @conversation.display_id)
-    send_mail_with_liquid(to: @agent.email, subject: "Conversation [ID - #{@conversation.display_id}] missed SLA for resolution time") and return
+    send_mail_with_liquid(to: @agent.email, subject: "Conversazione [ID - #{@conversation.display_id}] ha superato lo SLA per il tempo di risoluzione") and return
   end
 
   def liquid_droppables

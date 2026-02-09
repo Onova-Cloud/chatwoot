@@ -23,7 +23,7 @@ RSpec.describe AdministratorNotifications::ChannelNotificationsMailer do
       let(:mail) { described_class.with(account: account).facebook_disconnect(facebook_inbox).deliver_now }
 
       it 'renders the subject' do
-        expect(mail.subject).to eq('Your Facebook page connection has expired')
+        expect(mail.subject).to eq('La connessione alla tua pagina Facebook è scaduta')
       end
 
       it 'renders the receiver email' do
@@ -38,7 +38,7 @@ RSpec.describe AdministratorNotifications::ChannelNotificationsMailer do
     let(:mail) { described_class.with(account: account).whatsapp_disconnect(whatsapp_inbox).deliver_now }
 
     it 'renders the subject' do
-      expect(mail.subject).to eq('Your Whatsapp connection has expired')
+      expect(mail.subject).to eq('La tua connessione WhatsApp è scaduta')
     end
 
     it 'renders the receiver email' do
@@ -52,7 +52,7 @@ RSpec.describe AdministratorNotifications::ChannelNotificationsMailer do
     let(:mail) { described_class.with(account: account).instagram_disconnect(instagram_inbox).deliver_now }
 
     it 'renders the subject' do
-      expect(mail.subject).to eq('Your Instagram connection has expired')
+      expect(mail.subject).to eq('La tua connessione Instagram è scaduta')
     end
 
     it 'renders the receiver email' do

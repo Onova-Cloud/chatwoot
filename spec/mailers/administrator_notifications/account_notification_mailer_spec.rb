@@ -15,14 +15,14 @@ RSpec.describe AdministratorNotifications::AccountNotificationMailer do
   describe '#account_deletion_user_initiated' do
     it 'sets the correct subject for user-initiated deletion' do
       mail = mailer.account_deletion_user_initiated(account, 'manual_deletion')
-      expect(mail.subject).to eq('Your Chatwoot account deletion has been scheduled')
+      expect(mail.subject).to eq('La cancellazione del tuo account Omni è stata pianificata')
     end
   end
 
   describe '#account_deletion_for_inactivity' do
     it 'sets the correct subject for system-initiated deletion' do
       mail = mailer.account_deletion_for_inactivity(account, 'Account Inactive')
-      expect(mail.subject).to eq('Your Chatwoot account is scheduled for deletion due to inactivity')
+      expect(mail.subject).to eq('Il tuo account Omni è pianificato per la cancellazione a causa di inattività')
     end
   end
 
