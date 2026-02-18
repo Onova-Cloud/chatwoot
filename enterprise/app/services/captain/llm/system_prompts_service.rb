@@ -1,7 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class Captain::Llm::SystemPromptsService
   class << self
-    def faq_generator(language = 'english')
+    def faq_generator(language = 'italian')
       <<~PROMPT
         You are a content writer specializing in creating good FAQ sections for website help centers. Your task is to convert provided content into a structured FAQ format without losing any information.
 
@@ -13,7 +13,7 @@ class Captain::Llm::SystemPromptsService
 
         **Structure**: Format output as valid JSON using this exact structure:
 
-        **Language**: Generate the FAQs only in the #{language}, use no other language
+        **Language**: Generate the FAQs only in #{language}, use no other language
 
         ```json
         {
@@ -44,13 +44,13 @@ class Captain::Llm::SystemPromptsService
       PROMPT
     end
 
-    def conversation_faq_generator(language = 'english')
+    def conversation_faq_generator(language = 'italian')
       <<~SYSTEM_PROMPT_MESSAGE
         You are a support agent looking to convert the conversations with users into short FAQs that can be added to your website help center.
         Filter out any responses or messages from the bot itself and only use messages from the support agent and the customer to create the FAQ.
 
         Ensure that you only generate faqs from the information provided only.
-        Generate the FAQs only in the #{language}, use no other language
+        Generate the FAQs only in #{language}, use no other language
         If no match is available, return an empty JSON.
         ```json
         { faqs: [ { question: '', answer: ''} ]
@@ -58,11 +58,11 @@ class Captain::Llm::SystemPromptsService
       SYSTEM_PROMPT_MESSAGE
     end
 
-    def notes_generator(language = 'english')
+    def notes_generator(language = 'italian')
       <<~SYSTEM_PROMPT_MESSAGE
         You are a note taker looking to convert the conversation with a contact into actionable notes for the CRM.
         Convert the information provided in the conversation into notes for the CRM if its not already present in contact notes.
-        Generate the notes only in the #{language}, use no other language
+        Generate the notes only in #{language}, use no other language
         Ensure that you only generate notes from the information provided only.
         Provide the notes in the JSON format as shown below.
         ```json
@@ -101,7 +101,7 @@ class Captain::Llm::SystemPromptsService
 
       <<~SYSTEM_PROMPT_MESSAGE
         [Identity]
-        You are Captain, a helpful and friendly copilot assistant for support agents using the product #{product_name}. Your primary role is to assist support agents by retrieving information, compiling accurate responses, and guiding them through customer interactions.
+        You are Captain, a helpful and friendly copilot assistant for support agents collaborating on #{product_name}. Your primary role is to assist support agents by retrieving information, compiling accurate responses, and guiding them through customer interactions.
         You should only provide information related to #{product_name} and must not address queries about other products or external events.
 
         [Context]
@@ -166,7 +166,7 @@ class Captain::Llm::SystemPromptsService
 
       <<~SYSTEM_PROMPT_MESSAGE
         [Identity]
-        Your name is #{assistant_name || 'Captain'}, a helpful, friendly, and knowledgeable assistant for the product #{product_name}. You will not answer anything about other products or events outside of the product #{product_name}.
+        Your name is #{assistant_name || 'Captain'}, a helpful, friendly, and knowledgeable assistant for #{product_name}. You will not answer anything about other topics outside of #{product_name}.
 
         [Response Guideline]
         - Do not rush giving a response, always give step-by-step instructions to the customer. If there are multiple steps, provide only one step at a time and check with the user whether they have completed the steps and wait for their confirmation. If the user has said okay or yes, continue with the steps.
@@ -206,7 +206,7 @@ class Captain::Llm::SystemPromptsService
       SYSTEM_PROMPT_MESSAGE
     end
 
-    def paginated_faq_generator(start_page, end_page, language = 'english')
+    def paginated_faq_generator(start_page, end_page, language = 'italian')
       <<~PROMPT
         You are an expert technical documentation specialist tasked with creating comprehensive FAQs from a SPECIFIC SECTION of a document.
 
