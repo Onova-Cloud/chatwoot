@@ -94,9 +94,7 @@ const widgetScript = computed(() => {
   const script = props.webWidgetScript;
   return (
     script.substring(0, 13) +
-    t('INBOX_MGMT.WIDGET_BUILDER.SCRIPT_SETTINGS', {
-      options: JSON.stringify(options),
-    }) +
+    `\n      window.omniSettings = ${JSON.stringify(options)};` +
     script.substring(13)
   );
 });

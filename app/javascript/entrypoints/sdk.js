@@ -47,11 +47,11 @@ const runSDK = ({ baseUrl, websiteToken }) => {
     restoreWidgetInDOM(event.newDocument.body)
   );
 
-  const chatwootSettings = window.chatwootSettings || {};
-  let locale = chatwootSettings.locale;
-  let baseDomain = chatwootSettings.baseDomain;
+  const omniSettings = window.omniSettings || {};
+  let locale = omniSettings.locale;
+  let baseDomain = omniSettings.baseDomain;
 
-  if (chatwootSettings.useBrowserLanguage) {
+  if (omniSettings.useBrowserLanguage) {
     locale = window.navigator.language.replace('-', '_');
   }
 
@@ -59,26 +59,26 @@ const runSDK = ({ baseUrl, websiteToken }) => {
     baseUrl,
     baseDomain,
     hasLoaded: false,
-    hideMessageBubble: chatwootSettings.hideMessageBubble || false,
+    hideMessageBubble: omniSettings.hideMessageBubble || false,
     isOpen: false,
-    position: chatwootSettings.position === 'left' ? 'left' : 'right',
+    position: omniSettings.position === 'left' ? 'left' : 'right',
     websiteToken,
     locale,
-    useBrowserLanguage: chatwootSettings.useBrowserLanguage || false,
-    type: getBubbleView(chatwootSettings.type),
-    launcherTitle: chatwootSettings.launcherTitle || '',
-    showPopoutButton: chatwootSettings.showPopoutButton || false,
-    showUnreadMessagesDialog: chatwootSettings.showUnreadMessagesDialog ?? true,
-    widgetStyle: getWidgetStyle(chatwootSettings.widgetStyle) || 'standard',
+    useBrowserLanguage: omniSettings.useBrowserLanguage || false,
+    type: getBubbleView(omniSettings.type),
+    launcherTitle: omniSettings.launcherTitle || '',
+    showPopoutButton: omniSettings.showPopoutButton || false,
+    showUnreadMessagesDialog: omniSettings.showUnreadMessagesDialog ?? true,
+    widgetStyle: getWidgetStyle(omniSettings.widgetStyle) || 'standard',
     resetTriggered: false,
-    darkMode: getDarkMode(chatwootSettings.darkMode),
-    welcomeTitle: chatwootSettings.welcomeTitle || '',
-    welcomeDescription: chatwootSettings.welcomeDescription || '',
-    availableMessage: chatwootSettings.availableMessage || '',
-    unavailableMessage: chatwootSettings.unavailableMessage || '',
-    enableFileUpload: chatwootSettings.enableFileUpload,
-    enableEmojiPicker: chatwootSettings.enableEmojiPicker ?? true,
-    enableEndConversation: chatwootSettings.enableEndConversation ?? true,
+    darkMode: getDarkMode(omniSettings.darkMode),
+    welcomeTitle: omniSettings.welcomeTitle || '',
+    welcomeDescription: omniSettings.welcomeDescription || '',
+    availableMessage: omniSettings.availableMessage || '',
+    unavailableMessage: omniSettings.unavailableMessage || '',
+    enableFileUpload: omniSettings.enableFileUpload,
+    enableEmojiPicker: omniSettings.enableEmojiPicker ?? true,
+    enableEndConversation: omniSettings.enableEndConversation ?? true,
 
     toggle(state) {
       IFrameHelper.events.toggleBubble(state);
@@ -216,6 +216,6 @@ const runSDK = ({ baseUrl, websiteToken }) => {
   });
 };
 
-window.chatwootSDK = {
+window.omniSDK = {
   run: runSDK,
 };

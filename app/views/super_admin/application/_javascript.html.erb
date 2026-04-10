@@ -21,7 +21,7 @@ by providing a `content_for(:javascript)` block.
 <% end %>
 
 <script>
-window.chatwootSettings = {
+window.omniSettings = {
   hideMessageBubble: true,
 };
 
@@ -32,7 +32,7 @@ window.chatwootSettings = {
   g.async = true;
   s.parentNode.insertBefore(g,s);
   g.onload=function(){
-    window.chatwootSDK.run({
+    window.omniSDK.run({
       websiteToken: '<%= ChatwootHub.support_config[:support_website_token] %>',
       baseUrl: '<%= ChatwootHub.support_config[:support_script_url] %>'
     })
