@@ -241,7 +241,7 @@ const handleToggleWidget = () => {
           :script="widgetScript"
           lang="html"
           class="!text-start"
-          :codepen-title="`${websiteName} - Chatwoot Widget Test`"
+          :codepen-title="`${websiteName} - Omni Widget Test`"
           enable-code-pen
         />
       </div>

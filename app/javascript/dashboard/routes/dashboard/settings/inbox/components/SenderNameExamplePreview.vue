@@ -29,9 +29,9 @@ const senderNameKeyOptions = computed(() => [
     heading: t('INBOX_MGMT.EDIT.SENDER_NAME_SECTION.FRIENDLY.TITLE'),
     content: t('INBOX_MGMT.EDIT.SENDER_NAME_SECTION.FRIENDLY.SUBTITLE'),
     preview: {
-      senderName: 'Smith',
-      businessName: 'Chatwoot',
-      email: '<support@yourbusiness.com>',
+      senderName: 'Dario',
+      businessName: 'Omni',
+      email: '<info@onova.cloud>',
     },
   },
   {
@@ -40,8 +40,8 @@ const senderNameKeyOptions = computed(() => [
     content: t('INBOX_MGMT.EDIT.SENDER_NAME_SECTION.PROFESSIONAL.SUBTITLE'),
     preview: {
       senderName: '',
-      businessName: 'Chatwoot',
-      email: '<support@yourbusiness.com>',
+      businessName: 'Omni',
+      email: '<info@onova.cloud>',
     },
   },
 ]);
