@@ -1,0 +1,2 @@
+module Integrations::ShopifyNext
+end

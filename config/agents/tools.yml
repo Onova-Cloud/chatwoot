@@ -39,3 +39,48 @@
   title: 'Handoff to Human'
   description: 'Hand off the conversation to a human agent'
   icon: 'user-switch'
+
+- id: shopify_search_catalog
+  title: 'Shopify Search Catalog'
+  description: 'Search Shopify products using Storefront MCP'
+  icon: 'shopping-bag'
+
+- id: shopify_lookup_catalog
+  title: 'Shopify Lookup Catalog'
+  description: 'Retrieve Shopify products or variants by ID'
+  icon: 'shopping-bag'
+
+- id: shopify_get_product
+  title: 'Shopify Get Product'
+  description: 'Get Shopify product details, variants, and availability'
+  icon: 'shopping-bag'
+
+- id: shopify_search_policies
+  title: 'Shopify Search Policies'
+  description: 'Search Shopify store policies and FAQs'
+  icon: 'document'
+
+- id: shopify_get_cart
+  title: 'Shopify Get Cart'
+  description: 'Get Shopify cart contents from conversation context'
+  icon: 'shopping-cart'
+
+- id: shopify_update_cart
+  title: 'Shopify Update Cart'
+  description: 'Update Shopify cart contents when enabled'
+  icon: 'shopping-cart'
+
+- id: shopify_find_customer_orders
+  title: 'Shopify Find Customer Orders'
+  description: 'Find recent Shopify orders for the customer'
+  icon: 'receipt'
+
+- id: shopify_get_order
+  title: 'Shopify Get Order'
+  description: 'Get Shopify order details and fulfillment tracking'
+  icon: 'receipt'
+
+- id: shopify_find_customer
+  title: 'Shopify Find Customer'
+  description: 'Find a Shopify customer profile'
+  icon: 'user'

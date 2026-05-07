@@ -328,6 +328,11 @@ Rails.application.routes.draw do
                 get :orders
               end
             end
+            resource :shopify_next, controller: 'shopify_next', only: [:show, :create, :destroy] do
+              collection do
+                post :test
+              end
+            end
             resource :linear, controller: 'linear', only: [] do
               collection do
                 delete :destroy

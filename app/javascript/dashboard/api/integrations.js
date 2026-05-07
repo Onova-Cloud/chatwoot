@@ -38,6 +38,22 @@ class IntegrationsAPI extends ApiClient {
       shop_domain: shopDomain,
     });
   }
+
+  getShopifyNext() {
+    return axios.get(`${this.baseUrl()}/integrations/shopify_next`);
+  }
+
+  saveShopifyNext(data) {
+    return axios.post(`${this.baseUrl()}/integrations/shopify_next`, data);
+  }
+
+  testShopifyNext(data) {
+    return axios.post(`${this.baseUrl()}/integrations/shopify_next/test`, data);
+  }
+
+  deleteShopifyNext() {
+    return axios.delete(`${this.baseUrl()}/integrations/shopify_next`);
+  }
 }
 
 export default new IntegrationsAPI();

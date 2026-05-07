@@ -38,6 +38,19 @@ FactoryBot.define do
       reference_id { 'test-store.myshopify.com' }
     end
 
+    trait :shopify_next do
+      app_id { 'shopify_next' }
+      access_token { 'shpat_test_token' }
+      reference_id { 'test-store.myshopify.com' }
+      settings do
+        {
+          api_version: '2026-04',
+          enabled_for_captain: true,
+          update_cart_enabled: false
+        }
+      end
+    end
+
     trait :leadsquared do
       app_id { 'leadsquared' }
       settings do

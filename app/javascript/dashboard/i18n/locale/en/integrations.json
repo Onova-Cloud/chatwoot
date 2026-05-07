@@ -16,6 +16,32 @@
       },
       "ERROR": "There was an error connecting to Shopify. Please try again or contact support if the issue persists."
     },
+    "SHOPIFY_NEXT": {
+      "HEADER": "Shopify Next",
+      "DELETE": {
+        "TITLE": "Disconnect Shopify Next",
+        "MESSAGE": "Are you sure you want to disconnect Shopify Next?"
+      },
+      "FORM": {
+        "SHOP_DOMAIN": "Store URL",
+        "ACCESS_TOKEN": "Admin API access token",
+        "TOKEN_SAVED": "Saved token will be kept unless you enter a new one",
+        "API_VERSION": "Admin API version",
+        "ENABLED_FOR_CAPTAIN": "Enable Shopify Next tools for Captain",
+        "UPDATE_CART_ENABLED": "Allow Captain to update Shopify carts",
+        "STOREFRONT_SNIPPET": "Storefront context snippet",
+        "TEST": "Test connection",
+        "SAVE": "Save configuration"
+      },
+      "API": {
+        "SAVE_SUCCESS": "Shopify Next configuration saved successfully.",
+        "SAVE_ERROR": "Could not save Shopify Next configuration.",
+        "TEST_SUCCESS": "Connected to Shopify store {shopName}.",
+        "TEST_ERROR": "Could not connect to Shopify.",
+        "DELETE_SUCCESS": "Shopify Next disconnected successfully.",
+        "DELETE_ERROR": "Could not disconnect Shopify Next."
+      }
+    },
     "HEADER": "Integrations",
     "DESCRIPTION": "Chatwoot integrates with multiple tools and services to improve your team's efficiency. Explore the list below to configure your favorite apps.",
     "LEARN_MORE": "Learn more about integrations",

@@ -241,6 +241,13 @@ shopify:
   hook_type: account
   allow_multiple_hooks: false
 
+shopify_next:
+  id: shopify_next
+  logo: shopify.png
+  i18n_key: shopify_next
+  hook_type: account
+  allow_multiple_hooks: false
+
 leadsquared:
   id: leadsquared
   feature_flag: crm_integration

@@ -94,6 +94,14 @@ RSpec.describe Integrations::App do
         expect(app.active?(account)).to be true
       end
     end
+
+    context 'when the app is shopify_next' do
+      let(:app_name) { 'shopify_next' }
+
+      it 'returns true' do
+        expect(app.active?(account)).to be true
+      end
+    end
   end
 
   describe '#enabled?' do
