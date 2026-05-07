@@ -47,7 +47,7 @@ const runSDK = ({ baseUrl, websiteToken }) => {
     restoreWidgetInDOM(event.newDocument.body)
   );
 
-  const omniSettings = window.omniSettings || {};
+  const omniSettings = window.omniSettings || window.chatwootSettings || {};
   let locale = omniSettings.locale;
   let baseDomain = omniSettings.baseDomain;
 
@@ -216,6 +216,9 @@ const runSDK = ({ baseUrl, websiteToken }) => {
   });
 };
 
-window.omniSDK = {
+const sdk = {
   run: runSDK,
 };
+
+window.omniSDK = sdk;
+window.chatwootSDK = sdk;
