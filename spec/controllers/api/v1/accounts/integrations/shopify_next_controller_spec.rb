@@ -70,7 +70,7 @@ RSpec.describe 'Shopify Next Integration API', type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.parsed_body.dig('shop', 'name')).to eq('Test Store')
       expect(response.parsed_body.dig('storefront', 'connected')).to be true
-      expect(storefront_client).to have_received(:call_tool).with('search_policies', { query: 'shipping' })
+      expect(storefront_client).to have_received(:call_tool).with('search_shop_policies_and_faqs', { query: 'shipping' })
     end
   end
 

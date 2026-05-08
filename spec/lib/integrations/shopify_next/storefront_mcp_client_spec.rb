@@ -57,7 +57,7 @@ RSpec.describe Integrations::ShopifyNext::StorefrontMcpClient do
     end
 
     it 'authenticates through the password page and sends cookies to MCP' do
-      client.call_tool('search_policies', { query: 'returns' })
+      client.call_tool('search_shop_policies_and_faqs', { query: 'returns' })
 
       expect(http).to have_received(:request).exactly(3).times
       requests = []
@@ -81,7 +81,7 @@ RSpec.describe Integrations::ShopifyNext::StorefrontMcpClient do
     allow(http).to receive(:request).and_return(redirect_response)
 
     expect do
-      client.call_tool('search_policies', { query: 'returns' })
+      client.call_tool('search_shop_policies_and_faqs', { query: 'returns' })
     end.to raise_error(described_class::PASSWORD_PROTECTED_ERROR)
   end
 end

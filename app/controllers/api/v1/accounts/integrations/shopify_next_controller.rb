@@ -19,7 +19,7 @@ class Api::V1::Accounts::Integrations::ShopifyNextController < Api::V1::Accounts
     hook = Current.account.hooks.find_by(app_id: 'shopify_next') || Current.account.hooks.new(app_id: 'shopify_next')
     assign_hook_attributes(hook)
     shop = Integrations::ShopifyNext::AdminClient.new(hook).shop.dig('data', 'shop')
-    Integrations::ShopifyNext::StorefrontMcpClient.new(hook).call_tool('search_policies', { query: 'shipping' })
+    Integrations::ShopifyNext::StorefrontMcpClient.new(hook).call_tool('search_shop_policies_and_faqs', { query: 'shipping' })
 
     render json: { shop: shop, storefront: { connected: true } }
   rescue StandardError => e
