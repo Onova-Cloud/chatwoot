@@ -26,6 +26,9 @@
         "SHOP_DOMAIN": "Store URL",
         "ACCESS_TOKEN": "Admin API access token",
         "TOKEN_SAVED": "Saved token will be kept unless you enter a new one",
+        "STOREFRONT_PASSWORD": "Storefront password",
+        "STOREFRONT_PASSWORD_PLACEHOLDER": "Optional password for password-protected stores",
+        "STOREFRONT_PASSWORD_SAVED": "Saved password will be kept unless you enter a new one",
         "API_VERSION": "Admin API version",
         "ENABLED_FOR_CAPTAIN": "Enable Shopify Next tools for Captain",
         "UPDATE_CART_ENABLED": "Allow Captain to update Shopify carts",
@@ -36,7 +39,7 @@
       "API": {
         "SAVE_SUCCESS": "Shopify Next configuration saved successfully.",
         "SAVE_ERROR": "Could not save Shopify Next configuration.",
-        "TEST_SUCCESS": "Connected to Shopify store {shopName}.",
+        "TEST_SUCCESS": "Connected to Shopify store {shopName}. Admin API and Storefront MCP are available.",
         "TEST_ERROR": "Could not connect to Shopify.",
         "DELETE_SUCCESS": "Shopify Next disconnected successfully.",
         "DELETE_ERROR": "Could not disconnect Shopify Next."
@@ -257,6 +260,9 @@
     },
     "CONNECT": {
       "BUTTON_TEXT": "Connect"
+    },
+    "DISCONNECT": {
+      "BUTTON_TEXT": "Disconnect"
     },
     "DASHBOARD_APPS": {
       "TITLE": "Dashboard Apps",

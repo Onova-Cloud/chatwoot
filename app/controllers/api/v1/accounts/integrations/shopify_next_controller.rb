@@ -19,8 +19,9 @@ class Api::V1::Accounts::Integrations::ShopifyNextController < Api::V1::Accounts
     hook = Current.account.hooks.find_by(app_id: 'shopify_next') || Current.account.hooks.new(app_id: 'shopify_next')
     assign_hook_attributes(hook)
     shop = Integrations::ShopifyNext::AdminClient.new(hook).shop.dig('data', 'shop')
+    Integrations::ShopifyNext::StorefrontMcpClient.new(hook).call_tool('search_policies', { query: 'shipping' })
 
-    render json: { shop: shop }
+    render json: { shop: shop, storefront: { connected: true } }
   rescue StandardError => e
     render json: { error: e.message }, status: :unprocessable_entity
   end
@@ -43,16 +44,23 @@ class Api::V1::Accounts::Integrations::ShopifyNextController < Api::V1::Accounts
 
     hook.reference_id = normalized_shop_domain
     hook.status = 'enabled'
-    hook.settings = settings_params
+    hook.settings = settings_params(hook)
     hook.access_token = access_token_param.presence if access_token_param.present? || hook.new_record?
   end
 
-  def settings_params
-    {
+  def settings_params(hook)
+    settings = {
       api_version: params[:api_version].presence || Integrations::ShopifyNext::AdminClient::DEFAULT_API_VERSION,
       enabled_for_captain: ActiveModel::Type::Boolean.new.cast(params.fetch(:enabled_for_captain, true)),
       update_cart_enabled: ActiveModel::Type::Boolean.new.cast(params.fetch(:update_cart_enabled, false))
     }
+
+    settings[:storefront_password] = storefront_password_param.presence || saved_storefront_password(hook)
+    settings.compact
+  end
+
+  def saved_storefront_password(hook)
+    hook.settings&.dig('storefront_password') || hook.settings&.dig(:storefront_password)
   end
 
   def normalized_shop_domain
@@ -66,6 +74,10 @@ class Api::V1::Accounts::Integrations::ShopifyNextController < Api::V1::Accounts
     params[:access_token].to_s.strip
   end
 
+  def storefront_password_param
+    params[:storefront_password].to_s.strip
+  end
+
   def hook_payload(hook)
     {
       id: hook.id,
@@ -74,7 +86,14 @@ class Api::V1::Accounts::Integrations::ShopifyNextController < Api::V1::Accounts
       account_id: hook.account_id,
       hook_type: hook.hook_type,
       reference_id: hook.reference_id,
-      settings: hook.settings || {}
+      settings: sanitized_settings(hook)
     }
+  end
+
+  def sanitized_settings(hook)
+    settings = hook.settings || {}
+    settings.except('storefront_password', :storefront_password).merge(
+      storefront_password_configured: settings['storefront_password'].present? || settings[:storefront_password].present?
+    )
   end
 end

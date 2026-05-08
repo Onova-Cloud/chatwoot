@@ -20,6 +20,7 @@ const isSubmitting = ref(false);
 const isTesting = ref(false);
 const shopDomain = ref('');
 const accessToken = ref('');
+const storefrontPassword = ref('');
 const apiVersion = ref('2026-04');
 const enabledForCaptain = ref(true);
 const updateCartEnabled = ref(false);
@@ -29,15 +30,29 @@ const integrationAction = computed(() =>
   integration.value.enabled ? 'disconnect' : 'connect'
 );
 
-const formPayload = computed(() => ({
-  shop_domain: shopDomain.value,
-  access_token: accessToken.value,
-  api_version: apiVersion.value,
-  enabled_for_captain: enabledForCaptain.value,
-  update_cart_enabled: updateCartEnabled.value,
-}));
+const formPayload = computed(() => {
+  const payload = {
+    shop_domain: shopDomain.value,
+    api_version: apiVersion.value,
+    enabled_for_captain: enabledForCaptain.value,
+    update_cart_enabled: updateCartEnabled.value,
+  };
+
+  if (accessToken.value) {
+    payload.access_token = accessToken.value;
+  }
+
+  if (storefrontPassword.value) {
+    payload.storefront_password = storefrontPassword.value;
+  }
+
+  return payload;
+});
 
 const hasSavedToken = computed(() => integration.value.enabled);
+const hasSavedStorefrontPassword = computed(
+  () => integration.value.hooks?.[0]?.settings?.storefront_password_configured
+);
 const storefrontSnippet = computed(
   () => `window.$chatwoot.setConversationCustomAttributes({
   shopify_next: {
@@ -71,6 +86,7 @@ const save = async () => {
     const { data } = await integrationAPI.saveShopifyNext(formPayload.value);
     integration.value = { ...integration.value, enabled: true, hooks: [data] };
     accessToken.value = '';
+    storefrontPassword.value = '';
     useAlert(t('INTEGRATION_SETTINGS.SHOPIFY_NEXT.API.SAVE_SUCCESS'));
     await syncIntegration();
   } catch (error) {
@@ -108,6 +124,7 @@ const disconnect = async () => {
     useAlert(t('INTEGRATION_SETTINGS.SHOPIFY_NEXT.API.DELETE_SUCCESS'));
     shopDomain.value = '';
     accessToken.value = '';
+    storefrontPassword.value = '';
     await syncIntegration();
   } catch (error) {
     useAlert(
@@ -171,6 +188,22 @@ onMounted(async () => {
               hasSavedToken
                 ? t('INTEGRATION_SETTINGS.SHOPIFY_NEXT.FORM.TOKEN_SAVED')
                 : 'shpat_...'
+            "
+            type="password"
+          />
+          <Input
+            v-model="storefrontPassword"
+            :label="
+              t('INTEGRATION_SETTINGS.SHOPIFY_NEXT.FORM.STOREFRONT_PASSWORD')
+            "
+            :placeholder="
+              hasSavedStorefrontPassword
+                ? t(
+                    'INTEGRATION_SETTINGS.SHOPIFY_NEXT.FORM.STOREFRONT_PASSWORD_SAVED'
+                  )
+                : t(
+                    'INTEGRATION_SETTINGS.SHOPIFY_NEXT.FORM.STOREFRONT_PASSWORD_PLACEHOLDER'
+                  )
             "
             type="password"
           />
