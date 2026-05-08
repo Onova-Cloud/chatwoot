@@ -15,6 +15,7 @@ const state = {
   },
   lastMessageId: null,
   pendingCustomAttributes: {},
+  pendingAdditionalAttributes: {},
   pendingLabels: [],
 };
 

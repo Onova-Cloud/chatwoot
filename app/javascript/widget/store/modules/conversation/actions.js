@@ -7,6 +7,7 @@ import {
   setUserLastSeenAt,
   toggleStatus,
   setCustomAttributes,
+  setAdditionalAttributes,
   deleteCustomAttribute,
 } from 'widget/api/conversation';
 
@@ -33,20 +34,31 @@ export const actions = {
   sendMessage: async ({ dispatch, state: conversationState }, params) => {
     const { content, replyTo } = params;
     const message = createTemporaryMessage({ content, replyTo });
-    const { pendingCustomAttributes, pendingLabels } = conversationState;
+    const {
+      pendingCustomAttributes,
+      pendingAdditionalAttributes,
+      pendingLabels,
+    } = conversationState;
     dispatch('sendMessageWithData', {
       message,
       pendingCustomAttributes,
+      pendingAdditionalAttributes,
       pendingLabels,
     });
   },
   sendMessageWithData: async (
     { commit },
-    { message, pendingCustomAttributes = {}, pendingLabels = [] }
+    {
+      message,
+      pendingCustomAttributes = {},
+      pendingAdditionalAttributes = {},
+      pendingLabels = [],
+    }
   ) => {
     const { id, content, replyTo, meta = {} } = message;
     const hasPendingMetadata =
       Object.keys(pendingCustomAttributes).length > 0 ||
+      Object.keys(pendingAdditionalAttributes).length > 0 ||
       pendingLabels.length > 0;
 
     commit('pushMessageToConversation', message);
@@ -55,6 +67,9 @@ export const actions = {
       const { data } = await sendMessageAPI(content, replyTo, {
         customAttributes: hasPendingMetadata
           ? pendingCustomAttributes
+          : undefined,
+        additionalAttributes: hasPendingMetadata
+          ? pendingAdditionalAttributes
           : undefined,
         labels: hasPendingMetadata ? pendingLabels : undefined,
       });
@@ -93,9 +108,14 @@ export const actions = {
       attachments: [attachment],
       replyTo: params.replyTo,
     });
-    const { pendingCustomAttributes, pendingLabels } = conversationState;
+    const {
+      pendingCustomAttributes,
+      pendingAdditionalAttributes,
+      pendingLabels,
+    } = conversationState;
     const hasPendingMetadata =
       Object.keys(pendingCustomAttributes).length > 0 ||
+      Object.keys(pendingAdditionalAttributes).length > 0 ||
       pendingLabels.length > 0;
 
     commit('pushMessageToConversation', tempMessage);
@@ -103,6 +123,9 @@ export const actions = {
       const { data } = await sendAttachmentAPI(params, {
         customAttributes: hasPendingMetadata
           ? pendingCustomAttributes
+          : undefined,
+        additionalAttributes: hasPendingMetadata
+          ? pendingAdditionalAttributes
           : undefined,
         labels: hasPendingMetadata ? pendingLabels : undefined,
       });
@@ -222,6 +245,21 @@ export const actions = {
     }
     try {
       await setCustomAttributes(customAttributes);
+    } catch (error) {
+      // IgnoreError
+    }
+  },
+
+  setAdditionalAttributes: async (
+    { commit, rootGetters },
+    additionalAttributes = {}
+  ) => {
+    if (!rootGetters['conversationAttributes/getConversationParams']?.id) {
+      commit('setPendingAdditionalAttributes', additionalAttributes);
+      return;
+    }
+    try {
+      await setAdditionalAttributes(additionalAttributes);
     } catch (error) {
       // IgnoreError
     }

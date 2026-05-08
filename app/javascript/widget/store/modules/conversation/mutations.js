@@ -5,6 +5,7 @@ export const mutations = {
   clearConversations($state) {
     $state.conversations = {};
     $state.pendingCustomAttributes = {};
+    $state.pendingAdditionalAttributes = {};
     $state.pendingLabels = [];
   },
   pushMessageToConversation($state, message) {
@@ -123,6 +124,13 @@ export const mutations = {
     };
   },
 
+  setPendingAdditionalAttributes($state, data) {
+    $state.pendingAdditionalAttributes = {
+      ...$state.pendingAdditionalAttributes,
+      ...data,
+    };
+  },
+
   setPendingLabels($state, label) {
     if (!$state.pendingLabels.includes(label)) {
       $state.pendingLabels.push(label);
@@ -140,6 +148,7 @@ export const mutations = {
 
   clearPendingConversationMetadata($state) {
     $state.pendingCustomAttributes = {};
+    $state.pendingAdditionalAttributes = {};
     $state.pendingLabels = [];
   },
 };

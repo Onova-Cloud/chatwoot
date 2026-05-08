@@ -54,14 +54,19 @@ const hasSavedStorefrontPassword = computed(
   () => integration.value.hooks?.[0]?.settings?.storefront_password_configured
 );
 const storefrontSnippet = computed(
-  () => `window.$chatwoot.setConversationCustomAttributes({
-  shopify_next: {
-    current_url: window.location.href,
-    product_handle: window.ShopifyAnalytics?.meta?.product?.handle,
-    product_id: window.ShopifyAnalytics?.meta?.product?.gid,
-    cart_id: window.localStorage.getItem('shopify_cart_id')
-  }
-});`
+  () => `fetch('/cart.js')
+  .then(response => response.json())
+  .then(cart => {
+    window.$omni.setConversationAdditionalAttributes({
+      shopify_next: {
+        current_url: window.location.href,
+        product_handle: window.ShopifyAnalytics?.meta?.product?.handle,
+        product_id: window.ShopifyAnalytics?.meta?.product?.gid,
+        cart_token: cart?.token,
+        cart_id: cart?.token ? \`gid://shopify/Cart/\${cart.token}\` : null
+      }
+    });
+  });`
 );
 
 const syncIntegration = async () => {

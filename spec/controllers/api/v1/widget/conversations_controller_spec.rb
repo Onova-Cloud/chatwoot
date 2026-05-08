@@ -76,15 +76,19 @@ RSpec.describe '/api/v1/widget/conversations/toggle_typing', type: :request do
       expect(json_response['contact']['name']).to eq 'contact-name'
     end
 
-    it 'creates a conversation with correct message and custom attributes' do
+    it 'creates a conversation with correct message, custom attributes, and additional attributes' do
+      params = conversation_params.merge(additional_attributes: { shopify_next: { cart_id: 'gid://shopify/Cart/123' } })
+
       post '/api/v1/widget/conversations',
            headers: { 'X-Auth-Token' => token },
-           params: conversation_params,
+           params: params,
            as: :json
 
       expect(response).to have_http_status(:success)
       json_response = response.parsed_body
       expect(json_response['custom_attributes']['order_id']).to eq '12345'
+      created_conversation = account.conversations.find_by!(display_id: json_response['id'])
+      expect(created_conversation.additional_attributes.dig('shopify_next', 'cart_id')).to eq 'gid://shopify/Cart/123'
       expect(json_response['messages'][0]['content']).to eq 'This is a test message'
       expect(json_response['messages'][0]['message_type']).to eq 0
     end
@@ -298,6 +302,33 @@ RSpec.describe '/api/v1/widget/conversations/toggle_typing', type: :request do
         conversation.reload
         # conversation custom attributes should have "product_name" key with value "Chatwoot"
         expect(conversation.custom_attributes).to include('product_name' => 'Chatwoot')
+      end
+    end
+  end
+
+  describe 'POST /api/v1/widget/conversations/set_additional_attributes' do
+    let(:params) { { website_token: web_widget.website_token, additional_attributes: { shopify_next: { cart_id: 'gid://shopify/Cart/123' } } } }
+
+    context 'with invalid website token' do
+      it 'returns unauthorized' do
+        post '/api/v1/widget/conversations/set_additional_attributes', params: { website_token: '' }
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'with correct website token' do
+      it 'merges the values when provided' do
+        conversation.update!(additional_attributes: { 'browser_language' => 'en' })
+
+        post '/api/v1/widget/conversations/set_additional_attributes',
+             headers: { 'X-Auth-Token' => token },
+             params: params,
+             as: :json
+
+        expect(response).to have_http_status(:success)
+        conversation.reload
+        expect(conversation.additional_attributes['browser_language']).to eq 'en'
+        expect(conversation.additional_attributes.dig('shopify_next', 'cart_id')).to eq 'gid://shopify/Cart/123'
       end
     end
   end

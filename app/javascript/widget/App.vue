@@ -306,6 +306,11 @@ export default {
             'conversation/setCustomAttributes',
             message.customAttributes
           );
+        } else if (message.event === 'set-conversation-additional-attributes') {
+          this.$store.dispatch(
+            'conversation/setAdditionalAttributes',
+            message.additionalAttributes
+          );
         } else if (message.event === 'delete-conversation-custom-attribute') {
           this.$store.dispatch(
             'conversation/deleteCustomAttribute',

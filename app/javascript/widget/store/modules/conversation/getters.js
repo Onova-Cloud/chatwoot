@@ -34,6 +34,7 @@ export const getters = {
     }));
   },
   getPendingCustomAttributes: _state => _state.pendingCustomAttributes,
+  getPendingAdditionalAttributes: _state => _state.pendingAdditionalAttributes,
   getPendingLabels: _state => _state.pendingLabels,
   getIsFetchingList: _state => _state.uiFlags.isFetchingList,
   getMessageCount: _state => {

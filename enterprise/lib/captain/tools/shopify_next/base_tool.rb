@@ -58,6 +58,10 @@ class Captain::Tools::ShopifyNext::BaseTool < Captain::Tools::BasePublicTool
   end
 
   def context_cart_id(state)
-    shopify_context(state)[:cart_id] || shopify_context(state)[:cart_token]
+    cart_id = shopify_context(state)[:cart_id] || shopify_context(state)[:cart_token]
+    return if cart_id.blank?
+    return cart_id if cart_id.start_with?('gid://shopify/Cart/')
+
+    "gid://shopify/Cart/#{cart_id}"
   end
 end

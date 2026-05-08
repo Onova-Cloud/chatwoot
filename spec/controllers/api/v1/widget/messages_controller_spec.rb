@@ -60,14 +60,17 @@ RSpec.describe '/api/v1/widget/messages', type: :request do
         conversation.destroy!
         message_params = { content: 'hello world', timestamp: Time.current }
         custom_attributes = { plan: 'enterprise', source: 'website' }
+        additional_attributes = { shopify_next: { cart_id: 'gid://shopify/Cart/123' } }
         post api_v1_widget_messages_url,
-             params: { website_token: web_widget.website_token, message: message_params, custom_attributes: custom_attributes },
+             params: { website_token: web_widget.website_token, message: message_params, custom_attributes: custom_attributes,
+                       additional_attributes: additional_attributes },
              headers: { 'X-Auth-Token' => token },
              as: :json
 
         expect(response).to have_http_status(:success)
         new_conversation = contact.conversations.last
         expect(new_conversation.custom_attributes).to include('plan' => 'enterprise', 'source' => 'website')
+        expect(new_conversation.additional_attributes.dig('shopify_next', 'cart_id')).to eq('gid://shopify/Cart/123')
       end
 
       it 'creates conversation with labels when first message is sent' do

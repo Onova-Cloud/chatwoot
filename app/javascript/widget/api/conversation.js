@@ -71,6 +71,15 @@ const setCustomAttributes = async customAttributes => {
   );
 };
 
+const setAdditionalAttributes = async additionalAttributes => {
+  return API.post(
+    `/api/v1/widget/conversations/set_additional_attributes${window.location.search}`,
+    {
+      additional_attributes: additionalAttributes,
+    }
+  );
+};
+
 const deleteCustomAttribute = async customAttribute => {
   return API.post(
     `/api/v1/widget/conversations/destroy_custom_attributes${window.location.search}`,
@@ -91,5 +100,6 @@ export {
   sendEmailTranscript,
   toggleStatus,
   setCustomAttributes,
+  setAdditionalAttributes,
   deleteCustomAttribute,
 };

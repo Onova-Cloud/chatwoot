@@ -20,6 +20,7 @@ import { SDK_SET_BUBBLE_VISIBILITY } from 'shared/constants/sharedFrameEvents';
 
 const runSDK = ({ baseUrl, websiteToken }) => {
   if (window.$chatwoot) {
+    window.$omni = window.$chatwoot;
     return;
   }
 
@@ -164,6 +165,16 @@ const runSDK = ({ baseUrl, websiteToken }) => {
       }
     },
 
+    setConversationAdditionalAttributes(additionalAttributes = {}) {
+      if (!additionalAttributes || !Object.keys(additionalAttributes).length) {
+        throw new Error('Additional attributes should have atleast one key');
+      } else {
+        IFrameHelper.sendMessage('set-conversation-additional-attributes', {
+          additionalAttributes,
+        });
+      }
+    },
+
     deleteConversationCustomAttribute(customAttribute = '') {
       if (!customAttribute) {
         throw new Error('Custom attribute is required');
@@ -214,6 +225,8 @@ const runSDK = ({ baseUrl, websiteToken }) => {
     baseUrl,
     websiteToken,
   });
+
+  window.$omni = window.$chatwoot;
 };
 
 const sdk = {

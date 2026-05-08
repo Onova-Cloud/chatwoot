@@ -1,6 +1,7 @@
 class Api::V1::Widget::ConversationsController < Api::V1::Widget::BaseController
   include Events::Types
-  before_action :render_not_found_if_empty, only: [:toggle_typing, :toggle_status, :set_custom_attributes, :destroy_custom_attributes]
+  before_action :render_not_found_if_empty,
+                only: [:toggle_typing, :toggle_status, :set_custom_attributes, :set_additional_attributes, :destroy_custom_attributes]
 
   def index
     @conversation = conversation
@@ -68,6 +69,10 @@ class Api::V1::Widget::ConversationsController < Api::V1::Widget::BaseController
     conversation.update!(custom_attributes: permitted_params[:custom_attributes])
   end
 
+  def set_additional_attributes
+    conversation.update!(additional_attributes: conversation.additional_attributes.merge(permitted_params[:additional_attributes]))
+  end
+
   def destroy_custom_attributes
     conversation.custom_attributes = conversation.custom_attributes.excluding(params[:custom_attribute])
     conversation.save!
@@ -97,6 +102,7 @@ class Api::V1::Widget::ConversationsController < Api::V1::Widget::BaseController
   def permitted_params
     params.permit(:id, :typing_status, :website_token, :email, contact: [:name, :email, :phone_number],
                                                                message: [:content, :referer_url, :timestamp, :echo_id],
-                                                               custom_attributes: {})
+                                                               custom_attributes: {},
+                                                               additional_attributes: {})
   end
 end

@@ -40,7 +40,7 @@ class Api::V1::Widget::BaseController < ApplicationController
         browser: browser_params,
         initiated_at: timestamp_params,
         referer: permitted_params[:message][:referer_url]
-      },
+      }.merge(permitted_params[:additional_attributes].presence || {}),
       custom_attributes: permitted_params[:custom_attributes].presence || {}
     }
   end

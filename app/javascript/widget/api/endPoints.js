@@ -18,11 +18,16 @@ const createConversation = params => {
         referer_url: referrerURL,
       },
       custom_attributes: params.customAttributes,
+      additional_attributes: params.additionalAttributes,
     },
   };
 };
 
-const sendMessage = (content, replyTo, { customAttributes, labels } = {}) => {
+const sendMessage = (
+  content,
+  replyTo,
+  { customAttributes, additionalAttributes, labels } = {}
+) => {
   const referrerURL = window.referrerURL || '';
   const search = buildSearchParamsWithLocale(window.location.search);
   const params = {
@@ -36,6 +41,9 @@ const sendMessage = (content, replyTo, { customAttributes, labels } = {}) => {
   if (customAttributes && Object.keys(customAttributes).length > 0) {
     params.custom_attributes = customAttributes;
   }
+  if (additionalAttributes && Object.keys(additionalAttributes).length > 0) {
+    params.additional_attributes = additionalAttributes;
+  }
   if (labels && labels.length > 0) {
     params.labels = labels;
   }
@@ -44,7 +52,7 @@ const sendMessage = (content, replyTo, { customAttributes, labels } = {}) => {
 
 const sendAttachment = (
   { attachment, replyTo = null },
-  { customAttributes, labels } = {}
+  { customAttributes, additionalAttributes, labels } = {}
 ) => {
   const { referrerURL = '' } = window;
   const timestamp = new Date().toString();
@@ -65,6 +73,11 @@ const sendAttachment = (
   if (customAttributes && Object.keys(customAttributes).length > 0) {
     Object.entries(customAttributes).forEach(([key, value]) => {
       formData.append(`custom_attributes[${key}]`, value);
+    });
+  }
+  if (additionalAttributes && Object.keys(additionalAttributes).length > 0) {
+    Object.entries(additionalAttributes).forEach(([key, value]) => {
+      formData.append(`additional_attributes[${key}]`, value);
     });
   }
   if (labels && labels.length > 0) {
