@@ -42,6 +42,10 @@ body {
     list-style: decimal;
     @apply ltr:pl-4 rtl:pr-4;
   }
+
+  img {
+    @apply block max-w-full max-h-64 h-auto my-2 rounded-lg object-contain;
+  }
 }
 
 .is-flat-design {

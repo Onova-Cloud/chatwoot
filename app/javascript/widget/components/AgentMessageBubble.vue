@@ -7,6 +7,7 @@ import ChatArticle from './template/Article.vue';
 import EmailInput from './template/EmailInput.vue';
 import CustomerSatisfaction from 'shared/components/CustomerSatisfaction.vue';
 import IntegrationCard from './template/IntegrationCard.vue';
+import { formatImageLinksForWidget } from 'widget/helpers/imageLinkFormatter';
 
 export default {
   name: 'AgentMessageBubble',
@@ -40,6 +41,9 @@ export default {
     };
   },
   computed: {
+    formattedMessage() {
+      return this.formatMessage(formatImageLinksForWidget(this.message), false);
+    },
     isTemplate() {
       return this.messageType === 3;
     },
@@ -98,7 +102,7 @@ export default {
       class="chat-bubble agent bg-n-background dark:bg-n-solid-3 text-n-slate-12"
     >
       <div
-        v-dompurify-html="formatMessage(message, false)"
+        v-dompurify-html="formattedMessage"
         class="message-content text-n-slate-12"
       />
       <EmailInput
