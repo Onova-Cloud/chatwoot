@@ -54,19 +54,86 @@ const hasSavedStorefrontPassword = computed(
   () => integration.value.hooks?.[0]?.settings?.storefront_password_configured
 );
 const storefrontSnippet = computed(
-  () => `fetch('/cart.js')
-  .then(response => response.json())
-  .then(cart => {
-    window.$omni.setConversationAdditionalAttributes({
-      shopify_next: {
-        current_url: window.location.href,
-        product_handle: window.ShopifyAnalytics?.meta?.product?.handle,
-        product_id: window.ShopifyAnalytics?.meta?.product?.gid,
-        cart_token: cart?.token,
-        cart_id: cart?.token ? \`gid://shopify/Cart/\${cart.token}\` : null
+  () => `(function() {
+  var lastCompleteCartToken = null;
+  var cartPathPattern = /\\/cart\\/(add|change|update|clear)(\\.js)?/;
+
+  function buildCartId(token) {
+    return token ? \`gid://shopify/Cart/\${token}\` : null;
+  }
+
+  function rememberCompleteToken(token) {
+    if (token && token.indexOf('?key=') > -1) {
+      lastCompleteCartToken = token;
+    }
+  }
+
+  function bestToken(cart) {
+    var token = cart?.token;
+    rememberCompleteToken(token);
+    if (cart?.item_count === 0) return token;
+
+    return token && token.indexOf('?key=') > -1 ? token : lastCompleteCartToken || token;
+  }
+
+  window.syncShopifyNextContext = function() {
+    if (!window.$omni?.setConversationAdditionalAttributes) return;
+
+    fetch('/cart.js')
+      .then(response => response.json())
+      .then(cart => {
+        var token = bestToken(cart);
+
+        window.$omni.setConversationAdditionalAttributes({
+          shopify_next: {
+            current_url: window.location.href,
+            product_handle: window.ShopifyAnalytics?.meta?.product?.handle,
+            product_id: window.ShopifyAnalytics?.meta?.product?.gid,
+            cart_token: token,
+            cart_id: buildCartId(token)
+          }
+        });
+      });
+  };
+
+  function syncSoon() {
+    window.setTimeout(window.syncShopifyNextContext, 250);
+    window.setTimeout(window.syncShopifyNextContext, 1000);
+  }
+
+  var originalFetch = window.fetch;
+  window.fetch = function() {
+    var request = arguments[0];
+    var url = typeof request === 'string' ? request : request?.url || '';
+    var response = originalFetch.apply(this, arguments);
+
+    if (cartPathPattern.test(url)) {
+      response.finally(syncSoon);
+    }
+
+    return response;
+  };
+
+  var originalOpen = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function(method, url) {
+    this.addEventListener('loadend', function() {
+      if (cartPathPattern.test(url || '')) {
+        syncSoon();
       }
     });
-  });`
+    return originalOpen.apply(this, arguments);
+  };
+
+  document.addEventListener('click', function(event) {
+    if (event.target.closest('[aria-label="Open chat window"], .woot-widget-bubble')) {
+      window.syncShopifyNextContext();
+    }
+  }, true);
+
+  window.syncShopifyNextContext();
+  window.setTimeout(window.syncShopifyNextContext, 1000);
+  window.setTimeout(window.syncShopifyNextContext, 3000);
+})();`
 );
 
 const syncIntegration = async () => {
