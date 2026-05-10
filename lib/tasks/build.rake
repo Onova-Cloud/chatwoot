@@ -1,10 +1,17 @@
 # ref: https://github.com/rails/rails/issues/43906#issuecomment-1094380699
 # https://github.com/rails/rails/issues/43906#issuecomment-1099992310
+require 'fileutils'
+
 task before_assets_precompile: :environment do
   # run a command which starts your packaging
   system('pnpm install')
   system('echo "-------------- Bulding SDK for Production --------------"')
   system('pnpm run build:sdk')
+  FileUtils.mkdir_p(Rails.root.join('public/packs/js'))
+  FileUtils.cp(
+    Rails.root.join('app/javascript/entrypoints/shopify_next_bridge.js'),
+    Rails.root.join('public/packs/js/shopify_next_bridge.js')
+  )
   system('echo "-------------- Bulding App for Production --------------"')
 end
 

@@ -32,7 +32,7 @@
         "API_VERSION": "Admin API version",
         "ENABLED_FOR_CAPTAIN": "Enable Shopify Next tools for Captain",
         "UPDATE_CART_ENABLED": "Allow Captain to update Shopify carts",
-        "STOREFRONT_SNIPPET": "Storefront context snippet",
+        "STOREFRONT_SNIPPET": "Storefront install snippet",
         "TEST": "Test connection",
         "SAVE": "Save configuration"
       },

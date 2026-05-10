@@ -61,12 +61,18 @@ class Captain::Tools::ShopifyNext::BaseTool < Captain::Tools::BasePublicTool
     context = shopify_context(state)
     cart_id = preferred_cart_identifier(context[:cart_id], context[:cart_token])
     return if cart_id.blank?
-    return cart_id if cart_id.start_with?('gid://shopify/Cart/')
 
-    "gid://shopify/Cart/#{cart_id}"
+    cart_id.start_with?('gid://shopify/Cart/') ? cart_id : "gid://shopify/Cart/#{cart_id}"
   end
 
   def preferred_cart_identifier(cart_id, cart_token)
-    [cart_id, cart_token].compact_blank.find { |identifier| identifier.include?('?key=') } || cart_id.presence || cart_token
+    [cart_id, cart_token].compact_blank.find { |identifier| identifier.include?('?key=') }
+  end
+
+  def context_cart_snapshot(state)
+    cart = shopify_context(state)[:cart]
+    return {} if cart.blank?
+
+    cart.with_indifferent_access
   end
 end
