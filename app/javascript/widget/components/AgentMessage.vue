@@ -14,6 +14,7 @@ import { isASubmittedFormMessage } from 'shared/helpers/MessageTypeHelper';
 import ReplyToChip from 'widget/components/ReplyToChip.vue';
 import { BUS_EVENTS } from 'shared/constants/busEvents';
 import { emitter } from 'shared/helpers/mitt';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'AgentMessage',
@@ -45,6 +46,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      darkMode: 'appConfig/darkMode',
+      widgetColor: 'appConfig/getWidgetColor',
+    }),
     shouldDisplayAgentMessage() {
       if (
         this.contentType === 'input_select' &&
@@ -203,6 +208,8 @@ export default {
               :message-id="message.id"
               :message-type="messageType"
               :message="message.content"
+              :widget-color="widgetColor"
+              :dark-mode="darkMode"
             />
             <div
               v-if="hasAttachments"
